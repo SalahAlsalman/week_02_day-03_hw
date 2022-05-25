@@ -72,6 +72,20 @@ public class ParkController {
         return ResponseEntity.status(200).body(new ResponseAPI("Tickets sold Successfully!", 200));
     }
 
+    @PutMapping("/refill/{rideID}/{ticketsAmount}")
+    public ResponseEntity<ResponseAPI> refiltTickets(@PathVariable Integer rideID, @PathVariable Integer ticketsAmount){
+        if(ticketsAmount < 0) {
+            return ResponseEntity.status(400).body(new ResponseAPI("ticketsAmount is invalid!", 400));
+        }
+        Park ticketsRide = getRide(rideID);
+        if (ticketsRide == null) {
+            return ResponseEntity.status(400).body(new ResponseAPI("rideID is Wrong!", 400));
+        } else if (ticketsRide.getTickets() > 0) {
+            return ResponseEntity.status(400).body(new ResponseAPI("you can't refill, there's already tickets!", 400));
+        }
+        ticketsRide.setTickets(ticketsAmount);
+        return ResponseEntity.status(200).body(new ResponseAPI("Tickets refilled Successfully!", 200));
+    }
 
 
 
